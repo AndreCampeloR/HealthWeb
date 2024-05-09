@@ -2,6 +2,7 @@
 using Api.Models;
 using Api.Services;
 using Api.Services.Interface;
+using Api.Validacoes;
 using ApiPloomes.Dto.Requests;
 using ApiPloomes.Dto.Responses;
 using ApiPloomes.Repositorios.Interface;
@@ -19,11 +20,15 @@ namespace ProjetoPloomes.Controllers
     {
         private readonly IEmpresaRepositorio _empresaRepositorio;
         private readonly IAutenticadorService _autenticadorService;
+        private readonly IValidacoes _validacoes;
 
-        public EmpresaController(IEmpresaRepositorio empresaRepositorio, IAutenticadorService AutenticadorService)
+        public EmpresaController(IEmpresaRepositorio empresaRepositorio, 
+                                 IAutenticadorService AutenticadorService,
+                                 IValidacoes Validacoes)
         {
             _empresaRepositorio = empresaRepositorio;
             _autenticadorService = AutenticadorService;
+            _validacoes = Validacoes;
         }
 
         [HttpPost("Cadastrar")]
@@ -31,7 +36,9 @@ namespace ProjetoPloomes.Controllers
         {
             try
             {
-                if(empresaDto == null)
+                _validacoes.ValidarCadastroEmpresa(empresaDto.Telefone, empresaDto.Email, empresaDto.Cnpj);
+
+                if (empresaDto == null)
                     return BadRequest("Dados invalidos");
 
                 var empresaCadastrada = await _autenticadorService.ExisteEmpresa(empresaDto.Email);

@@ -8,6 +8,7 @@ using System.Text;
 using Api.Services.Interface;
 using Api.Services;
 using Microsoft.OpenApi.Models;
+using Api.Validacoes;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +56,7 @@ builder.Services.AddScoped<IOperadoraRepositorio, OperadoraRepositorio>();
 builder.Services.AddScoped<IMedicoRepositorio, MedicoRepositorio>();
 builder.Services.AddScoped<IOperadoraMedicoRepositorio, OperadoraMedicoRepositorio>();
 builder.Services.AddScoped<IAutenticadorService, AutenticadorService>();
+builder.Services.AddScoped<IValidacoes, Validacoes>();
 
 builder.Services.AddAuthentication(opt =>
 {
