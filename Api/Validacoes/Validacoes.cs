@@ -44,15 +44,11 @@ namespace Api.Validacoes
         }
         public bool ValidarTelefone(string telefone)
         {
-            if (telefone.Length != 11)
+            string telefoneFormatado = new string(telefone.Where(char.IsDigit).ToArray());
+
+            if (telefoneFormatado.Length != 11)
                 return false;
 
-            if (!telefone.All(char.IsDigit))
-                return false;
-
-            string pattern = @"^\([1-9]{2}\) (?:[2-8]|9[0-9])[0-9]{3}\-[0-9]{4}$";
-            if (!Regex.IsMatch(telefone, pattern))
-                return false;
 
             return true;
 
@@ -73,44 +69,40 @@ namespace Api.Validacoes
 
         public bool ValidarCPF(string cpf)
         {
-            cpf = cpf.Replace(".", "").Replace("-", "");
+            cpf = new string(cpf.Where(char.IsDigit).ToArray());
+
             if (cpf.Length != 11)
+            {
                 return false;
+            }
 
-            if (!cpf.All(char.IsDigit))
-                return false;
-
-            int[] multiplicadores1 = { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-            int[] multiplicadores2 = { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
-
-            string tempCpf = cpf.Substring(0, 9);
             int soma = 0;
-
             for (int i = 0; i < 9; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicadores1[i];
-
+            {
+                soma += int.Parse(cpf[i].ToString()) * (10 - i);
+            }
             int resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
+            int digitoVerificador1 = resto < 2 ? 0 : 11 - resto;
 
-            string digito = resto.ToString();
-            tempCpf += digito;
+            if (int.Parse(cpf[9].ToString()) != digitoVerificador1)
+            {
+                return false;
+            }
+
             soma = 0;
-
             for (int i = 0; i < 10; i++)
-                soma += int.Parse(tempCpf[i].ToString()) * multiplicadores2[i];
-
+            {
+                soma += int.Parse(cpf[i].ToString()) * (11 - i);
+            }
             resto = soma % 11;
-            if (resto < 2)
-                resto = 0;
-            else
-                resto = 11 - resto;
+            int digitoVerificador2 = resto < 2 ? 0 : 11 - resto;
 
-            digito += resto.ToString();
+            if (int.Parse(cpf[10].ToString()) != digitoVerificador2)
+            {
+                return false;
+            }
 
-            return cpf.EndsWith(digito);
+            return true;
         }
 
         public void AdicionarErro(string mensagem)
@@ -128,6 +120,24 @@ namespace Api.Validacoes
 
             if (!ValidarCNPJ(cnpj))
                 AdicionarErro("CNPJ inválido.");
+
+            if (_erros.Any())
+            {
+                string mensagemErro = string.Join(Environment.NewLine, _erros);
+                throw new ValidacaoException(mensagemErro);
+            }
+        }
+
+        public void ValidarCadastroMedico(string telefone, string email, string cpf)
+        {
+            if (!ValidarTelefone(telefone))
+                AdicionarErro("Telefone inválido.");
+
+            if (!ValidarEmail(email))
+                AdicionarErro("E-mail inválido.");
+
+            if (!ValidarCPF(cpf))
+                AdicionarErro("Cpf inválido.");
 
             if (_erros.Any())
             {

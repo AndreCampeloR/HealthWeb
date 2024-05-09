@@ -5,6 +5,7 @@ using ApiPloomes.Dto.Requests;
 using ApiPloomes.Dto.Responses;
 using ApiPloomes.Repositorios.Interface;
 using Microsoft.AspNetCore.Authorization;
+using ProjetoPloomes.Models;
 
 namespace ApiPloomes.Controllers
 {
@@ -16,7 +17,7 @@ namespace ApiPloomes.Controllers
 
         public OperadoraController(IOperadoraRepositorio operadoraRepositorio)
         {
-            _operadoraRepositorio = operadoraRepositorio ?? throw new ArgumentNullException(nameof(operadoraRepositorio));
+            _operadoraRepositorio = operadoraRepositorio;
         }
 
         [HttpGet("ListarOperadoras")]
@@ -72,6 +73,11 @@ namespace ApiPloomes.Controllers
                 var operadoraCadastrada = await _operadoraRepositorio.BuscarOperadoraPorId(operadoraDto.Id);
                 if (operadoraCadastrada != null)
                     return NotFound($"A operadora com Id : {operadoraDto.Id} já está cadastrada");
+
+                var verificaDisponibilidadeDaEmpresa = _operadoraRepositorio.verificaDisponibilidadeDaEmpresa(operadoraDto.EmpresaId);
+
+                if(!verificaDisponibilidadeDaEmpresa)
+                    return BadRequest($" Não foi possível vincular operadora a empresa {operadoraDto.EmpresaId} pois a empresa já atingiu a quantidade máxima (2)");
 
                 var operadoraResponse = await _operadoraRepositorio.CadastrarOperadora(operadoraDto);
 

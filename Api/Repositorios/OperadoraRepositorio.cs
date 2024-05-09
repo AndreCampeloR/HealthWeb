@@ -50,6 +50,16 @@ namespace ApiPloomes.Repositorios
             return operadorasResponse;
         }
 
+        public bool verificaDisponibilidadeDaEmpresa(int empresaId)
+        {
+            var operadoras = _dbContext.Operadora.Where(operadora => operadora.EmpresaId == empresaId).OrderBy(operadora => operadora.Nome);
+
+            if (operadoras.Count() >= 2)
+                return false;
+
+            return true;
+        }
+
         public async Task<Operadora> BuscarOperadoraPorId(int Id)
         {
             var operadora = _dbContext.Operadora.FirstOrDefault(x => x.Id == Id);

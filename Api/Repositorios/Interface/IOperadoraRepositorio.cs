@@ -9,11 +9,13 @@ namespace ApiPloomes.Repositorios.Interface
     {
         Task<List<OperadoraResponse>> ListarOperadoras();
         Task<List<OperadoraResponse>> ListarOperadorasPorEmpresa(int empresaId);
+        bool verificaDisponibilidadeDaEmpresa(int empresaId);
         Task<Operadora> BuscarOperadoraPorId(int Id);
         Task<CadastroResponse> CadastrarOperadora(OperadoraRequest operadoraRequest);
         Task<OperadoraResponse> AtualizarOperadora(OperadoraRequest operadoraRequest, int id);
 
         Task<OperadoraResponse> DeletarOperadora(int id);
+
 
     }
 }

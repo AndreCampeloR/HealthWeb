@@ -65,6 +65,8 @@ namespace ProjetoPloomes.Controllers
         {
             try
             {
+                _validacoes.ValidarCadastroEmpresa(empresaDto.Telefone, empresaDto.Email, empresaDto.Cnpj);
+
                 var empresaResponse = await _empresaRepositorio.Atualizar(empresaDto, id);
                 if (empresaResponse == null)
                 {
