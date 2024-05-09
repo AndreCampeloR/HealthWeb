@@ -55,6 +55,7 @@ namespace ApiPloomes.Repositorios
             var empresa = await _dbContext.Empresa.FindAsync(id)
                           ?? throw new Exception($"A empresa com ID: {id} não foi encontrada");
 
+            empresa.Cnpj = empresaRequest.Cnpj;
             empresa.Nome = empresaRequest.Nome;
             empresa.Email = empresaRequest.Email;
             empresa.Telefone = empresaRequest.Telefone;
