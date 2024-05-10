@@ -14,7 +14,7 @@
 # HealthWeb :computer:
 <p align="center">
   <a href="#-sobre">Sobre</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-   <a href="#Instalacão">Instalacão</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+   <a href="#-Execução-do-projeto">Instalacão</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-autor">Autor</a>
 </p>
 
@@ -29,15 +29,8 @@
 para verificação de CPNJs e CPFs validos, deixarei abaixo os links para gerar:
     https://www.4devs.com.br/gerador_de_cnpj - CNPJ
     https://www.4devs.com.br/gerador_de_cpf - CPF
-## 🚀 Instalacão 
-Dotnet 6.0
-Microsoft.EntityFrameworkCore 6.0.0
-Microsoft.EntityFrameworkCore.Design 6.0.0
-Microsoft.EntityFrameworkCore.SqlServer 6.0.0
-Microsoft.EntityFrameworkCore.Tools 6.0.0
-Microsoft.AspNetCore.Authentication.JwtBearer 6
-Microsoft.AspNetCore.Identity.EntityFrameworkCore 6
-Swashbuckle.AspNetCore 6.5.0
+## 🚀 Execução do projeto  
+
 
 ## 👨‍💻 Autor
 
